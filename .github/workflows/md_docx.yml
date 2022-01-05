@@ -1,0 +1,39 @@
+name: markdown to docx
+
+on:
+  workflow_call:
+    inputs:
+      markdown-directory:
+        description: 'Markdown file Directory'
+        required: true
+        type: string
+
+jobs:
+  convert_via_pandoc:
+    runs-on: ubuntu-20.04
+    container:
+      image: docker://pandoc/latex:2.16.2
+      options: --entrypoint=sh
+    steps:
+      - uses: actions/checkout@v2
+      - name: prepare output directories
+        with:
+          markdown-directory: ${{ inputs.markdown-directory }}
+        run: |
+          mkdir output 
+          echo -e "# Master Table of Content \n\n\n" >> result.md
+          ls -1 ./ | grep .md | nl >> result.md
+          ls -1 ./ -I result.md | grep .md > list
+          for i in `cat list` ; do
+             echo -e "\n-------------------##-------------------\n" >> result.md
+             echo -e "\n\n\n\n## $i \t\n\n" >> result.md
+             cat ./$i >> result.md
+          done
+      - name: convert md to docx
+        run: |
+          pandoc -f markdown -t docx --number-sections --file-scope  result.md -o output/result.docx
+          cp result.md output/result.md
+      - uses: actions/upload-artifact@master
+        with:
+          name: output
+          path: output
