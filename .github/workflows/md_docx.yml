@@ -17,13 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: prepare output directories
-        with:
-          markdown-directory: ${{ inputs.markdown-directory }}
         run: |
           mkdir output 
           echo -e "# Master Table of Content \n\n\n" >> result.md
-          ls -1 ./ | grep .md | nl >> result.md
-          ls -1 ./ -I result.md | grep .md > list
+          ls -1 ${{ inputs.markdown-directory }}/ | grep .md | nl >> result.md
+          ls -1 ${{ inputs.markdown-directory }}/ -I result.md | grep .md > list
           for i in `cat list` ; do
              echo -e "\n-------------------##-------------------\n" >> result.md
              echo -e "\n\n\n\n## $i \t\n\n" >> result.md
@@ -37,3 +35,5 @@ jobs:
         with:
           name: output
           path: output
+          markdown-directory: markdown
+
