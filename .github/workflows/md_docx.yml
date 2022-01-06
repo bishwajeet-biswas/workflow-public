@@ -25,7 +25,7 @@ jobs:
           for i in `cat list` ; do
              echo -e "\n-------------------##-------------------\n" >> result.md
              echo -e "\n\n\n\n## $i \t\n\n" >> result.md
-             cat ./$i >> result.md
+             cat ${{ inputs.markdown-directory }}/$i >> result.md
           done
       - name: convert md to docx
         run: |
