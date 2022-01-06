@@ -21,7 +21,7 @@ jobs:
           mkdir output 
           echo -e "# Master Table of Content \n\n\n" >> result.md
           ls -1 ${{ inputs.markdown-directory }}/ | grep .md | nl >> result.md
-          ls -1 ${{ inputs.markdown-directory }}/ -I result.md | grep .md > list
+          ls -1 ${{ inputs.markdown-directory }}/ | grep .md > list
           for i in `cat list` ; do
              echo -e "\n-------------------##-------------------\n" >> result.md
              echo -e "\n\n\n\n## $i \t\n\n" >> result.md
