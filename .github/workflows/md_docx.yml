@@ -19,18 +19,18 @@ jobs:
       - name: prepare output directories
         run: |
           mkdir output 
-          echo -e "# Master Table of Content \n\n\n" >> result.md
-          ls -1 ${{ inputs.markdown-directory }}/ | grep .md | nl >> result.md
-          ls -1 ${{ inputs.markdown-directory }}/ --ignore result.md | grep .md > list
+          echo -e "# Master Table of Content \n\n\n" >> ../result.md
+          ls -1 ${{ inputs.markdown-directory }}/ | grep .md | nl >> ../result.md
+          ls -1 ${{ inputs.markdown-directory }}/ | grep .md > list
           for i in `cat list` ; do
-             echo -e "\n-------------------##-------------------\n" >> result.md
-             echo -e "\n\n\n\n## $i \t\n\n" >> result.md
-             cat ${{ inputs.markdown-directory }}/$i >> result.md
+             echo -e "\n-------------------##-------------------\n" >> ../result.md
+             echo -e "\n\n\n\n## $i \t\n\n" >> ../result.md
+             cat ${{ inputs.markdown-directory }}/$i >> ../result.md
           done
       - name: convert md to docx
         run: |
-          pandoc -f markdown -t docx --number-sections --file-scope  result.md -o output/result.docx
-          cp result.md output/result.md
+          pandoc -f markdown -t docx --number-sections --file-scope  ../result.md -o output/result.docx
+          cp ../result.md output/result.md
       - uses: actions/upload-artifact@master
         with:
           name: output
